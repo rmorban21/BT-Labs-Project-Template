@@ -26,9 +26,8 @@ public class Assignment {
 
     private User codeReviewer;
 
-    public Assignment(Long id, String status, int number, String githubUrl, String branch,
+    public Assignment(String status, int number, String githubUrl, String branch,
                       String reviewVideoUrl, User user, User codeReviewer) {
-        this.id = id;
         this.status = status;
         this.number = number;
         this.githubUrl = githubUrl;
