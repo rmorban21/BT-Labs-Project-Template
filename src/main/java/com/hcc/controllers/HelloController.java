@@ -1,6 +1,5 @@
 package com.hcc.controllers;
 
-import com.hcc.entities.Hello;
 import com.hcc.services.HelloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
