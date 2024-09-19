@@ -1,6 +1,5 @@
 package com.hcc.services;
 
-import com.hcc.repositories.HelloRepository;
 import java.util.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

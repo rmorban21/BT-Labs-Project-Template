@@ -1,9 +1,6 @@
 package com.hcc.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Assignment {
@@ -22,10 +19,15 @@ public class Assignment {
 
     private String reviewVideoUrl;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "code_reviewer_id")
     private User codeReviewer;
 
+    // Constructor with arguments
     public Assignment(String status, int number, String githubUrl, String branch,
                       String reviewVideoUrl, User user, User codeReviewer) {
         this.status = status;
@@ -37,9 +39,11 @@ public class Assignment {
         this.codeReviewer = codeReviewer;
     }
 
+    // No-args constructor
     public Assignment() {
     }
 
+    // Getters and setters
     public Long getId() {
         return id;
     }

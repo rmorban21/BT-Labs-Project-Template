@@ -1,24 +1,28 @@
 package com.hcc.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.persistence.*;
 
 @Entity
-public class Authority {
+public class Authority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String authority;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-    public Authority(Long id, String authority, User user) {
-        this.id = id;
+    // Constructor to initialize the authority field
+    public Authority(String authority) {
         this.authority = authority;
-        this.user = user;
     }
+
+    public Authority() {}
 
     public Long getId() {
         return id;
@@ -28,6 +32,7 @@ public class Authority {
         this.id = id;
     }
 
+    @Override
     public String getAuthority() {
         return authority;
     }
