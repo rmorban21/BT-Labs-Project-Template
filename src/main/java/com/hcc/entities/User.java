@@ -23,16 +23,14 @@ public class User {
 
     private List<Authority> authorities;
 
-    public User(Long id, Date cohortStartDate, String username, String password, List<Authority> authorities) {
-        this.id = id;
+    public User(Date cohortStartDate, String username, String password, List<Authority> authorities) {
         this.cohortStartDate = cohortStartDate;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
     }
 
-    public User() {
-    }
+    public User (){}
 
     public Long getId() {
         return id;
