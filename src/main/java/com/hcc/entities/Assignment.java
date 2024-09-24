@@ -1,20 +1,27 @@
 package com.hcc.entities;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "assignments")
 public class Assignment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String status;
 
+    @NotNull
     private int number;
 
+    @NotNull
     private String githubUrl;
 
+    @NotNull
     private String branch;
 
     private String reviewVideoUrl;

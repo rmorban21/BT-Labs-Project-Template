@@ -3,17 +3,21 @@ package com.hcc.dto;
 import com.hcc.entities.Assignment;
 import com.hcc.enums.AssignmentEnum;
 import com.hcc.enums.AssignmentStatusEnum;
+import com.sun.istack.NotNull;
 
 public class AssignmentResponseDto {
+
+    @NotNull
     private Long id;
+    @NotNull
     private String status;
+    @NotNull
     private int number;
+    @NotNull
     private String githubUrl;
+    @NotNull
     private String branch;
     private String reviewVideoUrl;
-    private String username; // From User
-    private String codeReviewer; // From User
-
     private AssignmentEnum[] assignmentEnums = AssignmentEnum.values();
     private AssignmentStatusEnum[] statusEnums = AssignmentStatusEnum.values();
 
@@ -24,10 +28,7 @@ public class AssignmentResponseDto {
         this.githubUrl = assignment.getGithubUrl();
         this.branch = assignment.getBranch();
         this.reviewVideoUrl = assignment.getReviewVideoUrl();
-        this.username = assignment.getUser().getUsername();
-        this.codeReviewer = assignment.getCodeReviewer().getUsername();
     }
-
     public Long getId() {
         return id;
     }
@@ -50,14 +51,6 @@ public class AssignmentResponseDto {
 
     public String getReviewVideoUrl() {
         return reviewVideoUrl;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getCodeReviewer() {
-        return codeReviewer;
     }
 
     public AssignmentEnum[] getAssignmentEnums() {

@@ -1,5 +1,6 @@
 package com.hcc.entities;
 
+import com.sun.istack.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ public class Authority implements GrantedAuthority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
     private String authority;
 
     @ManyToOne

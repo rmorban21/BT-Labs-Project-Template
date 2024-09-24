@@ -1,16 +1,14 @@
 package com.hcc.dto;
 
+import com.sun.istack.NotNull;
+
 public class AuthCredentialsRequest {
 
+    @NotNull
     private String username;
+
+    @NotNull
     private String password;
-
-    public AuthCredentialsRequest(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public AuthCredentialsRequest() {}
 
     public String getUsername() {
         return username;
@@ -26,10 +24,5 @@ public class AuthCredentialsRequest {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public boolean isValid() {
-        return username != null && !username.trim().isEmpty() &&
-                password != null && !password.trim().isEmpty();
     }
 }
