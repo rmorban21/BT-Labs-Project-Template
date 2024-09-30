@@ -10,14 +10,11 @@ public class AssignmentResponseDtoTest {
 
     @Test
     public void testAssignmentResponseDto() {
-        // Arrange
         User user = new User();
         Assignment assignment = new Assignment("Submitted", 1, "https://github.com/test/repo", "main", "https://test.com/video", user, null);
 
-        // Act
         AssignmentResponseDto dto = new AssignmentResponseDto(assignment);
 
-        // Assert
         assertNotNull(dto);
         assertEquals(assignment.getId(), dto.getId());
         assertEquals(assignment.getStatus(), dto.getStatus());

@@ -12,14 +12,11 @@ public class UserTest {
 
     @Test
     public void testUserEntity() {
-        // Arrange
         List<Authority> authorities = new ArrayList<>();
         authorities.add(new Authority("ROLE_LEARNER"));
 
-        // Act
         User user = new User(new Date(), "testUser", "password123", authorities);
 
-        // Assert
         assertNotNull(user);
         assertEquals("testUser", user.getUsername());
         assertEquals("password123", user.getPassword());

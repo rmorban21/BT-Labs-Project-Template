@@ -22,29 +22,23 @@ public class UserRepositoryMockitoTest {
 
     @Test
     public void testFindByUsername_UserExists() {
-        // Arrange
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("password123");
         when(userRepository.findByUsername("testUser")).thenReturn(user);
 
-        // Act
         User foundUser = userRepository.findByUsername("testUser");
 
-        // Assert
         assertNotNull(foundUser);
         assertEquals("testUser", foundUser.getUsername());
     }
 
     @Test
     public void testFindByUsername_UserNotExists() {
-        // Arrange
         when(userRepository.findByUsername("nonExistentUser")).thenReturn(null);
 
-        // Act
         User foundUser = userRepository.findByUsername("nonExistentUser");
 
-        // Assert
         assertNull(foundUser);
     }
 }

@@ -28,16 +28,13 @@ public class UserDetailServiceImplTest {
 
     @Test
     public void testLoadUserByUsername_UserExists() {
-        // Arrange
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("password123");
         when(userRepository.findByUsername("testUser")).thenReturn(user);
 
-        // Act
         UserDetails userDetails = userDetailServiceImpl.loadUserByUsername("testUser");
 
-        // Assert
         assertNotNull(userDetails);
         assertEquals("testUser", userDetails.getUsername());
         assertEquals("password123", userDetails.getPassword());
@@ -45,10 +42,8 @@ public class UserDetailServiceImplTest {
 
     @Test
     public void testLoadUserByUsername_UserNotFound() {
-        // Arrange
         when(userRepository.findByUsername("nonExistentUser")).thenReturn(null);
 
-        // Act & Assert
         assertThrows(UsernameNotFoundException.class, () -> {
             userDetailServiceImpl.loadUserByUsername("nonExistentUser");
         });
