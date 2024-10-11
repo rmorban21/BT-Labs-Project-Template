@@ -40,18 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().cors().disable();
+        http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .exceptionHandling().authenticationEntryPoint((request, response, exception) -> {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
+                }).and()
+                .authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()   // Allow access to authentication endpoints (login, validate token)
+                .antMatchers("/api/users/register").permitAll()  // Allow access to the registration endpoint
+                .anyRequest().authenticated();  // All other endpoints require authentication
 
-        http = http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
-
-        http = http.exceptionHandling().authenticationEntryPoint((request, response, exception) -> {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
-        }).and();
-
-        http.authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated();
-
+        // Add the JWT filter before UsernamePasswordAuthenticationFilter
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
