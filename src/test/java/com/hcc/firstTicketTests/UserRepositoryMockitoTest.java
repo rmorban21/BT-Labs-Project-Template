@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -22,23 +24,31 @@ public class UserRepositoryMockitoTest {
 
     @Test
     public void testFindByUsername_UserExists() {
+        // Arrange
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("password123");
-        when(userRepository.findByUsername("testUser")).thenReturn(user);
 
-        User foundUser = userRepository.findByUsername("testUser");
+        // Mock the repository to return an Optional containing the user
+        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
 
-        assertNotNull(foundUser);
-        assertEquals("testUser", foundUser.getUsername());
+        // Act
+        Optional<User> foundUser = userRepository.findByUsername("testUser");
+
+        // Assert
+        assertTrue(foundUser.isPresent());
+        assertEquals("testUser", foundUser.get().getUsername());
     }
 
     @Test
     public void testFindByUsername_UserNotExists() {
-        when(userRepository.findByUsername("nonExistentUser")).thenReturn(null);
+        // Mock the repository to return an empty Optional
+        when(userRepository.findByUsername("nonExistentUser")).thenReturn(Optional.empty());
 
-        User foundUser = userRepository.findByUsername("nonExistentUser");
+        // Act
+        Optional<User> foundUser = userRepository.findByUsername("nonExistentUser");
 
-        assertNull(foundUser);
+        // Assert
+        assertFalse(foundUser.isPresent());
     }
 }

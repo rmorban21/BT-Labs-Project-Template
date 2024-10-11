@@ -10,6 +10,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -31,7 +33,7 @@ public class UserDetailServiceImplTest {
         User user = new User();
         user.setUsername("testUser");
         user.setPassword("password123");
-        when(userRepository.findByUsername("testUser")).thenReturn(user);
+        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
 
         UserDetails userDetails = userDetailServiceImpl.loadUserByUsername("testUser");
 
@@ -42,7 +44,7 @@ public class UserDetailServiceImplTest {
 
     @Test
     public void testLoadUserByUsername_UserNotFound() {
-        when(userRepository.findByUsername("nonExistentUser")).thenReturn(null);
+        when(userRepository.findByUsername("nonExistentUser")).thenReturn(Optional.empty());
 
         assertThrows(UsernameNotFoundException.class, () -> {
             userDetailServiceImpl.loadUserByUsername("nonExistentUser");

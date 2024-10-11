@@ -1,13 +1,19 @@
 package com.hcc.config;
 
+import com.hcc.filters.JwtFilter;
 import com.hcc.services.UserDetailServiceImpl;
 import com.hcc.utils.CustomPasswordEncoder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -18,24 +24,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private CustomPasswordEncoder customPasswordEncoder;
 
+    @Autowired
+    private JwtFilter jwtFilter;
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // Configuring authentication manager with custom user details service and password encoder
         auth.userDetailsService(userDetailServiceImpl).passwordEncoder(customPasswordEncoder.getPasswordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()  // Disabling CSRF for simplicity; consider enabling for security in production
-                .authorizeRequests()
-                .antMatchers("/api/auth/**").permitAll()  // Public access to authentication endpoints
-                .antMatchers("/api/assignments/**").hasRole("LEARNER")  // Only learners can access assignments
-                .antMatchers("/api/review/**").hasRole("REVIEWER")  // Only reviewers can access review endpoints
-                .anyRequest().authenticated()  // All other requests require authentication
-                .and()
-                .formLogin().permitAll()  // Enabling form-based login
-                .and()
-                .logout().permitAll();  // Allowing everyone to access logout
+        http.csrf().disable().cors().disable();
+
+        http = http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and();
+
+        http = http.exceptionHandling().authenticationEntryPoint((request, response, exception) -> {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
+        }).and();
+
+        http.authorizeRequests()
+                .antMatchers("/api/auth/**").permitAll()
+                .anyRequest().authenticated();
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
