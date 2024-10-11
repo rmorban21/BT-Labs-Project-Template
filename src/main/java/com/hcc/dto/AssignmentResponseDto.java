@@ -17,6 +17,7 @@ public class AssignmentResponseDto {
     private String githubUrl;
     @NotNull
     private String branch;
+    @NotNull
     private String reviewVideoUrl;
     private AssignmentEnum[] assignmentEnums = AssignmentEnum.values();
     private AssignmentStatusEnum[] statusEnums = AssignmentStatusEnum.values();

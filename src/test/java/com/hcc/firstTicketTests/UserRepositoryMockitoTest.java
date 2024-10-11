@@ -1,9 +1,9 @@
 package com.hcc.firstTicketTests;
+
 import com.hcc.entities.User;
 import com.hcc.repositories.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
