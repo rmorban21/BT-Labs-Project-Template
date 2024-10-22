@@ -15,11 +15,15 @@ public class AssignmentService {
     @Autowired
     private AssignmentRepository assignmentRepository;
 
+<<<<<<< HEAD
     @Autowired
     private UserRepository userRepository;
 
     public List<Assignment> getAssignmentsByUser(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
+=======
+    public List<Assignment> getAssignmentsByUser(User user) {
+>>>>>>> secondticket
         return assignmentRepository.findByUser(user);
     }
 
@@ -27,6 +31,7 @@ public class AssignmentService {
         return assignmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Assignment not found"));
     }
 
+<<<<<<< HEAD
     public Assignment updateAssignment(Long id, Assignment updatedAssignment) {
         Assignment existingAssignment = assignmentRepository.findById(id).orElseThrow(() -> new RuntimeException("Assignment not found"));
 
@@ -53,4 +58,19 @@ public class AssignmentService {
 
 
 
+=======
+    public Assignment createAssignment(Assignment assignment) {
+        return assignmentRepository.save(assignment);
+    }
+
+    public Assignment updateAssignmentById(Long id, Assignment updatedAssignment) {
+        Assignment assignment = getAssignmentById(id);
+        assignment.setStatus(updatedAssignment.getStatus());
+        assignment.setNumber(updatedAssignment.getNumber());
+        assignment.setGithubUrl(updatedAssignment.getGithubUrl());
+        assignment.setBranch(updatedAssignment.getBranch());
+        assignment.setReviewVideoUrl(updatedAssignment.getReviewVideoUrl());
+        return assignmentRepository.save(assignment);
+    }
+>>>>>>> secondticket
 }
