@@ -1,10 +1,13 @@
 package com.hcc.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hcc.enums.AuthorityEnum;
 import com.sun.istack.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,25 +19,22 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
-    @NotNull
-    private Date cohortStartDate;
+    @Column(name = "cohort_start_date")
+    private LocalDate cohortStartDate;
 
-    @NotNull
+    @Column(name = "username")
     private String username;
 
-    @NotNull
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonIgnore
+    private List<Authority> authorities;
+
+    @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_authority",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "authority_id"))
-    private List<Authority> authorities = new ArrayList<>();
-
-    public User(Date cohortStartDate, String username, String password, List<Authority> authorities) {
+    public User(LocalDate cohortStartDate, String username, String password, List<Authority> authorities) {
         this.cohortStartDate = cohortStartDate;
         this.username = username;
         this.password = password;
@@ -51,11 +51,11 @@ public class User implements UserDetails {
         this.id = id;
     }
 
-    public Date getCohortStartDate() {
+    public LocalDate getCohortStartDate() {
         return cohortStartDate;
     }
 
-    public void setCohortStartDate(Date cohortStartDate) {
+    public void setCohortStartDate(LocalDate cohortStartDate) {
         this.cohortStartDate = cohortStartDate;
     }
 
@@ -107,6 +107,8 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        List<GrantedAuthority> roles = new ArrayList<>();
+        roles.add((GrantedAuthority) new Authority(AuthorityEnum.ROLE_LEARNER, this));
+        return roles;
     }
 }

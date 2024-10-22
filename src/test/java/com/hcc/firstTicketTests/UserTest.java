@@ -1,6 +1,7 @@
 package com.hcc.firstTicketTests;
 import com.hcc.entities.Authority;
 import com.hcc.entities.User;
+import com.hcc.enums.AuthorityEnum;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,7 +14,7 @@ public class UserTest {
     @Test
     public void testUserEntity() {
         List<Authority> authorities = new ArrayList<>();
-        authorities.add(new Authority("ROLE_LEARNER"));
+        authorities.add(new Authority(AuthorityEnum.ROLE_LEARNER, new User()));
 
         User user = new User(new Date(), "testUser", "password123", authorities);
 

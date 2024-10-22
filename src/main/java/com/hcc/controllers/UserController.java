@@ -1,5 +1,6 @@
 package com.hcc.controllers;
 
+import com.hcc.dto.AuthCredentialsRequest;
 import com.hcc.entities.User;
 import com.hcc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,11 @@ public class UserController {
 
     // Endpoint to register a new user
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<User> registerUser(@RequestBody AuthCredentialsRequest request) {
         // Call the UserService to handle the registration logic
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
         User savedUser = userService.registerNewUser(user);
         return ResponseEntity.ok(savedUser);
     }
