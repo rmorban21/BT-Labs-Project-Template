@@ -30,6 +30,9 @@ public class AssignmentResponseDto {
         this.branch = assignment.getBranch();
         this.reviewVideoUrl = assignment.getReviewVideoUrl();
     }
+
+    // Getters
+
     public Long getId() {
         return id;
     }

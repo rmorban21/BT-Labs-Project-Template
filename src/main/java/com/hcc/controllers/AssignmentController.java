@@ -1,45 +1,60 @@
 package com.hcc.controllers;
 
+import com.hcc.dto.AssignmentResponseDto;
 import com.hcc.entities.Assignment;
 import com.hcc.entities.User;
-import com.hcc.repositories.UserRepository;
 import com.hcc.services.AssignmentService;
+import com.hcc.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/assignments")
+@RequestMapping("/api")
 public class AssignmentController {
 
     @Autowired
     private AssignmentService assignmentService;
 
     @Autowired
-    private UserRepository userRepository;  // Inject UserRepository directly
+    private UserService userService;
 
-    // Create a new assignment
-    @PostMapping
-    public ResponseEntity<Assignment> createAssignment(@RequestBody Assignment assignment) {
-        Assignment newAssignment = assignmentService.createAssignment(assignment);
-        return ResponseEntity.ok(newAssignment);
-    }
-    // Get all assignments by logged-in user
-    @GetMapping
-    public ResponseEntity<List<Assignment>> getAssignmentsByUser() {
-        // Get the logged-in user's details from the security context
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // Fetch the User entity using the username from UserRepository
-        User user = userRepository.findByUsername(userDetails.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        // Fetch and return assignments for this user
+    @GetMapping("/assignments")
+    public ResponseEntity<List<AssignmentResponseDto>> getAssignmentsByUser(Principal principal) {
+        User user = userService.findUserByUsername(principal.getName());
         List<Assignment> assignments = assignmentService.getAssignmentsByUser(user);
-        return ResponseEntity.ok(assignments);
+        List<AssignmentResponseDto> response = assignments.stream()
+                .map(AssignmentResponseDto::new)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/assignments/{id}")
+    public ResponseEntity<AssignmentResponseDto> getAssignmentById(@PathVariable Long id) {
+        Assignment assignment = assignmentService.getAssignmentById(id);
+        AssignmentResponseDto response = new AssignmentResponseDto(assignment);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/assignments/{id}")
+    public ResponseEntity<AssignmentResponseDto> updateAssignmentById(
+            @PathVariable Long id, @RequestBody Assignment updatedAssignment) {
+        Assignment assignment = assignmentService.updateAssignmentById(id, updatedAssignment);
+        AssignmentResponseDto response = new AssignmentResponseDto(assignment);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/assignments")
+    public ResponseEntity<AssignmentResponseDto> createAssignment(
+            @RequestBody Assignment newAssignment, Principal principal) {
+        User user = userService.findUserByUsername(principal.getName());
+        newAssignment.setUser(user);
+        Assignment createdAssignment = assignmentService.createAssignment(newAssignment);
+        AssignmentResponseDto response = new AssignmentResponseDto(createdAssignment);
+        return ResponseEntity.ok(response);
     }
 }
