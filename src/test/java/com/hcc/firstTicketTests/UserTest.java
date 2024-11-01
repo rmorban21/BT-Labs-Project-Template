@@ -3,8 +3,9 @@ import com.hcc.entities.Authority;
 import com.hcc.entities.User;
 import com.hcc.enums.AuthorityEnum;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +17,7 @@ public class UserTest {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(new Authority(AuthorityEnum.ROLE_LEARNER, new User()));
 
-        User user = new User(new Date(), "testUser", "password123", authorities);
+        User user = new User(LocalDate.now(), "testUser", "password123", authorities);
 
         assertNotNull(user);
         assertEquals("testUser", user.getUsername());
