@@ -1,0 +1,19 @@
+/* src/components/LearnerDashboard.css */
+.dashboard-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+section {
+    margin: 20px 0;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.submit-assignment-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}

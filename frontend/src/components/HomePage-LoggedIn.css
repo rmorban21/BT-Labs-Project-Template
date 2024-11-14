@@ -1,0 +1,26 @@
+/* src/components/HomePageLoggedIn.css */
+.homepage-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.boxes-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.box {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 30%;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+}
+
+.dashboard-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
